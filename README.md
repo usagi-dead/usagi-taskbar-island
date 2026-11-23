@@ -45,7 +45,7 @@ A modular Fluent Design island for the **Windows 11 taskbar**, combining a custo
 1. Install **Violentmonkey** or **Tampermonkey** in your browser (Firefox, Chrome, Edge, Opera, Yandex, etc.).
 2. Click the direct raw install link below — your userscript manager will prompt to install automatically:
 
-   👉 **[Install `vk-music-bridge.user.js`](https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/usagi-taskbar-island/main/vk-music-bridge.user.js)**
+   👉 **[Install `vk-music-bridge.user.js`](https://raw.githubusercontent.com/usagi-dead/usagi-taskbar-island/main/vk-music-bridge.user.js)**
 
 3. Ensure `MediaBar → Style, controls & VK Bridge → Enable VK Music HTTP Bridge` is enabled (`true`, port `49321`).
 4. Refresh open VK tabs (`F5`). Only the active playing tab polls the bridge (`localStorage` leader election).
@@ -105,7 +105,7 @@ A modular Fluent Design island for the **Windows 11 taskbar**, combining a custo
 1. Установите расширение **Violentmonkey** или **Tampermonkey** в браузер.
 2. Установите скрипт в 1 клик по прямой ссылке:
 
-   👉 **[Установить `vk-music-bridge.user.js`](https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/usagi-taskbar-island/main/vk-music-bridge.user.js)**
+   👉 **[Установить `vk-music-bridge.user.js`](https://raw.githubusercontent.com/usagi-dead/usagi-taskbar-island/main/vk-music-bridge.user.js)**
 
 3. Убедитесь, что в настройках мода включена опция `Включить мост ВК Музыки` (порт по умолчанию `49321`).
 4. Обновите открытые вкладки VK (`F5`). При нескольких открытых вкладках активной автоматически выбирается вкладка с играющей музыкой (`localStorage`).

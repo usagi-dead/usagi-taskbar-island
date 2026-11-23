@@ -5,7 +5,7 @@
 // @description:ru-RU Модульный островок в стиле Fluent Design для панели задач Windows 11 (медиаплеер и кнопка WireGuard VPN с раздельным туннелированием).
 // @version         1.0.0
 // @author          usagi
-// @github          https://github.com/YOUR_GITHUB_USERNAME
+// @github          https://github.com/usagi-dead
 // @license         MIT
 // @include         *
 // @exclude         audiodg.exe
@@ -120,7 +120,7 @@ A modular Fluent Design island for the **Windows 11 taskbar**, combining a custo
 Standard Windows media controls (SMTC) do not expose VK's Shuffle, Repeat, or Add-to-Library state. To enable two-way sync:
 1. Ensure `MediaBar -> Style, controls & VK Bridge -> Enable VK Music HTTP Bridge` is enabled (`true`, port `49321` by default).
 2. Install **Violentmonkey** or **Tampermonkey** in your browser.
-3. Install the companion userscript: [vk-music-bridge.user.js](https://github.com/YOUR_GITHUB_USERNAME/usagi-taskbar-island/blob/main/vk-music-bridge.user.js) (replace URL once hosted on your GitHub/Gist).
+3. Install the companion userscript: [vk-music-bridge.user.js](https://raw.githubusercontent.com/usagi-dead/usagi-taskbar-island/main/vk-music-bridge.user.js).
 4. Refresh open VK tabs (`F5`). Only the actively playing tab reports state (`localStorage` leader election).
 
 ---
@@ -164,7 +164,7 @@ Standard Windows media controls (SMTC) do not expose VK's Shuffle, Repeat, or Ad
 #### 3. Синхронизация с ВК Музыкой (`vk-music-bridge.user.js`)
 1. Убедитесь, что включена опция `Включить мост ВК Музыки` (порт `49321`).
 2. Установите в браузер расширение **Violentmonkey** или **Tampermonkey**.
-3. Установите скрипт [vk-music-bridge.user.js](https://github.com/YOUR_GITHUB_USERNAME/usagi-taskbar-island/blob/main/vk-music-bridge.user.js) и обновите вкладки с VK (`F5`).
+3. Установите скрипт [vk-music-bridge.user.js](https://raw.githubusercontent.com/usagi-dead/usagi-taskbar-island/main/vk-music-bridge.user.js) и обновите вкладки с VK (`F5`).
 */
 // ==/WindhawkModReadme==
 
