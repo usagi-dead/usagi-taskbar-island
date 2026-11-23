@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Usagi VK Music Bridge (Taskbar Island)
 // @namespace    usagi-taskbar-island
-// @version      1.3.0
+// @version      1.4.0
 // @description  Bridges VK Music shuffle, repeat (off/all/one), and library add/remove to Usagi Taskbar Island.
 // @author       usagi
 // @match        https://vk.com/*
@@ -10,6 +10,9 @@
 // @match        https://*.vk.ru/*
 // @match        https://music.vk.com/*
 // @grant        GM_xmlhttpRequest
+// @grant        GM_getValue
+// @grant        GM_setValue
+// @grant        GM_registerMenuCommand
 // @grant        unsafeWindow
 // @connect      127.0.0.1
 // @connect      localhost
@@ -22,6 +25,7 @@
 
     const BRIDGE_URL = 'http://127.0.0.1:49321/';
     const LEADER_KEY = 'usagi_vk_bridge_leader';
+    const TOKEN_STORAGE_KEY = 'vk_bridge_token';
     const LEADER_TTL_MS = 1800;
     const POLL_INTERVAL_MS = 350;
     const TAB_ID = `${Math.random().toString(36).slice(2, 10)}_${Date.now()}`;
@@ -34,6 +38,36 @@
     let inFlightAt = 0;
     let lastHadAudio = null;
     let lastIdlePingAt = 0;
+    let lastAuthError = false;
+
+    function getBridgeToken() {
+        try {
+            return String(GM_getValue(TOKEN_STORAGE_KEY, '') || '').trim();
+        } catch {
+            return '';
+        }
+    }
+
+    function promptBridgeToken() {
+        const current = getBridgeToken();
+        const entered = window.prompt(
+            'Enter the exact "VK Bridge Secret Token" from Usagi Taskbar Island mod settings (leave empty to disable bridge requests):',
+            current
+        );
+        if (entered === null) return;
+        const trimmed = String(entered).trim();
+        try {
+            GM_setValue(TOKEN_STORAGE_KEY, trimmed);
+            lastAuthError = false;
+        } catch {}
+        pollBridge(true);
+    }
+
+    try {
+        if (typeof GM_registerMenuCommand === 'function') {
+            GM_registerMenuCommand('Set VK Bridge token', promptBridgeToken);
+        }
+    } catch {}
 
     // Keyed by trackKey -> { val: boolean, ts: number }
     const optimisticLiked = new Map();
@@ -938,6 +972,8 @@
         const rep = hasAudio ? readRepeatState(handles) : 0;
         const liked = hasAudio ? readLikedState(handles, track) : 0;
 
+        const bridgeToken = getBridgeToken();
+
         try {
             const spaBar = findSpaPlayerBar();
             const shBtn = findShuffleButton(true);
@@ -945,7 +981,9 @@
             const addBtn = findAddButton(true);
             win.__usagiVkBridgeState = JSON.stringify({
                 v: 2,
-                scriptVer: '1.3.0',
+                scriptVer: '1.4.0',
+                needsToken: !bridgeToken,
+                authError: lastAuthError,
                 tabId: TAB_ID,
                 isLeader,
                 prio,
@@ -966,9 +1004,14 @@
             });
         } catch {}
 
+        if (!bridgeToken) {
+            return;
+        }
+
+        const tokenParam = encodeURIComponent(bridgeToken);
         const url = hasAudio
-            ? `${BRIDGE_URL}?has=1&v=2&s=${shuf}&r=${rep}&l=${liked}&t=${now}`
-            : `${BRIDGE_URL}?has=0&v=2&t=${now}`;
+            ? `${BRIDGE_URL}?has=1&v=2&s=${shuf}&r=${rep}&l=${liked}&token=${tokenParam}&t=${now}`
+            : `${BRIDGE_URL}?has=0&v=2&token=${tokenParam}&t=${now}`;
 
         inFlight = true;
         inFlightAt = now;
@@ -979,6 +1022,11 @@
             timeout: 800,
             onload: (resp) => {
                 inFlight = false;
+                if (resp?.status === 403) {
+                    lastAuthError = true;
+                    return;
+                }
+                lastAuthError = false;
                 const cmd = (resp?.responseText || '').trim();
                 if (cmd && cmd !== 'none') {
                     handleCommand(cmd, getPlayerHandles(), parseTrackInfo(getCurrentTrackRaw(getPlayerHandles())));
