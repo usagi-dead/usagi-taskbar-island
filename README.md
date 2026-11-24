@@ -55,7 +55,7 @@ A modular Fluent Design island for the **Windows 11 taskbar**, combining a custo
 ### 3. Configure WireGuard VPN *(Optional)*
 > If you only need the Media Player, disable `Island → Enable VPN button module` in mod settings.
 
-1. Install [WireGuard for Windows](https://www.wireguard.com/install/) (or AmneziaWG) and keep your `.conf` file in an administrator-protected folder (e.g. `C:\Program Files\WireGuard\Data\Configurations\my-vpn.conf`).
+1. Install [WireGuard for Windows](https://www.wireguard.com/install/) (or AmneziaWG) and keep your `.conf` file in an administrator-protected folder (e.g. `C:\ProgramData\WireGuardConfigs\my-vpn.conf` with write permissions restricted to Administrators; note that WireGuard's manager service auto-encrypts plain `.conf` files placed in `Data\Configurations\` into `.conf.dpapi`, which also works if you point the setting directly at the `.conf.dpapi` file).
 2. Open **Mod Settings → VPN — Connection & Behavior**:
    - Check **Path to `wireguard.exe`** (default: `C:\Program Files\WireGuard\wireguard.exe`).
    - Enter the full path in **Path to `.conf` file**.
